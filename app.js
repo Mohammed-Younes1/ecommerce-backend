@@ -5,12 +5,17 @@ const app = express();
 const phones = require("./routes/phoneRouter");
 const tv = require("./routes/tvRouter");
 const auth=require("./routes/authRoutes")
+// const protectedRoute = require('./routes/protectedRoute');
 
 app.use(express.json());
 //routes
-app.use(auth);
+app.use('/authRoutes',auth);
 app.use("/api/phones", phones);
 app.use("/api/tv", tv);
+
+// for later to make sure the routes are safe when login
+// app.use('/protected', protectedRoute);
+
 
 app.get("/", (req, res) => {
   res.send("<h1>test</h1>");
