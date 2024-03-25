@@ -6,9 +6,9 @@ const jwt = require("jsonwebtoken");
 // User registration
 module.exports.signup_post = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password,fullName,phoneNumber,shippingAddress} = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hashedPassword });
+    const user = new User({ email, password: hashedPassword ,fullName,phoneNumber,shippingAddress});
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
