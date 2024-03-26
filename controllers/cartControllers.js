@@ -31,10 +31,68 @@ module.exports.addToCart = async (req, res) => {
 };
 
 // Controller to update an item in the cart
-module.exports.updateCartItem = async (req, res) => {};
+module.exports.updateCartItem = async (req, res) => {
+  try {
+    const { userId, productId } = req.body;
+    const { quantity } = req.params;
+
+    //check if there is a cart for the user
+    let cart = await Cart.findOne({ userId });
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+
+    const itemToUpdate = cart.items.find(
+      (item) => item.productId.toString() === productId
+    );
+    if (!itemToUpdate) {
+      return res.status(404).json({ error: "Item not found in cart" });
+    }
+
+    itemToUpdate.quantity = quantity;
+
+    await cart.save();
+    res.status(200).json({ message: "Cart item updated successfully" });
+  } catch (error) {
+    console.error("Error Updating items in the cart:", error);
+  }
+};
 
 // Controller to remove an item from the cart
-module.exports.exports.removeFromCart = async (req, res) => {};
+module.exports.exports.removeFromCart = async (req, res) => {
+  try {
+    const { userId, productId } = req.body;
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+    // Remove the item with the matching productId
+    cart.items = cart.items.filter(
+      (item) => item.productId.toString() !== productId
+    );
+
+    await cart.save();
+    res.status(200).json({ message: "Cart item updated successfully" });
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    res.status(406).json({ error: "Error removing item from cart" });
+  }
+};
 
 // Controller to get the cart contents
-module.exports.exports.getCart = async (req, res) => {};
+module.exports.exports.getCart = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    let cart = await Cart.findOne({ userId }).populate("items.productId");
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+
+    res.status(200).json(cart);
+  } catch (error) {
+    console.error("Error getting cart contents:", error);
+    res.status(500).json({ error: "Error getting cart contents" });
+  }
+};
