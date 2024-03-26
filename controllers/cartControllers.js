@@ -59,7 +59,7 @@ module.exports.updateCartItem = async (req, res) => {
 };
 
 // Controller to remove an item from the cart
-module.exports.exports.removeFromCart = async (req, res) => {
+module.exports.removeFromCart = async (req, res) => {
   try {
     const { userId, productId } = req.body;
     let cart = await Cart.findOne({ userId });
@@ -81,7 +81,7 @@ module.exports.exports.removeFromCart = async (req, res) => {
 };
 
 // Controller to get the cart contents
-module.exports.exports.getCart = async (req, res) => {
+module.exports.getCart = async (req, res) => {
   try {
     const { userId } = req.body;
 

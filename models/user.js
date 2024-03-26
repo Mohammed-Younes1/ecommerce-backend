@@ -26,7 +26,6 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: [true, "Please enter your address"],
     },
-    addressLine2: String,
     city: {
       type: String,
       required: [false, "Please enter your city"],
