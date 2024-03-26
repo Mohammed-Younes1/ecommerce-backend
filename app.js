@@ -5,6 +5,7 @@ const app = express();
 const phones = require("./routes/phoneRouter");
 const tv = require("./routes/tvRouter");
 const auth=require("./routes/authRoutes")
+const cart = require("./routes/cartRoutes");
 // const protectedRoute = require('./routes/protectedRoute');
 
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use('/authRoutes',auth);
 app.use("/api/phones", phones);
 app.use("/api/tv", tv);
+app.use("/api/cart", cart);
 
 // for later to make sure the routes are safe when login
 // app.use('/protected', protectedRoute);
