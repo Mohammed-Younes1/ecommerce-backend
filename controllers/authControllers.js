@@ -8,6 +8,11 @@ module.exports.signup_post = async (req, res) => {
   try {
     const { email, password, fullName, phoneNumber, shippingAddress } =
       req.body;
+    // checking if the email is already used
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email is already in use" });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       email,
@@ -47,8 +52,7 @@ module.exports.login_post = async (req, res) => {
 
 module.exports.update_profile = async (req, res) => {
   try {
-
-    const userId = req.userId; 
+    const userId = req.userId;
     const { fullName, phoneNumber, shippingAddress, password } = req.body;
     const user = await User.findById(userId);
     if (!user) {
