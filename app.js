@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 // const swaggerUI = require('swagger-ui-express');
@@ -7,6 +9,9 @@ const phones = require("./routes/phoneRouter");
 const tv = require("./routes/tvRouter");
 const auth=require("./routes/authRoutes")
 const cart = require("./routes/cartRoutes");
+const shipment=require("./routes/shipmentRoutes");
+const verifyToken = require('./middleware/authMiddleware');
+const isAuthenticated = require('./middleware/userMiddleware');
 
 
 // const protectedRoute = require('./routes/protectedRoute');
@@ -31,8 +36,9 @@ app.use(express.json());
 app.use('/authRoutes',auth);
 app.use("/api/phones", phones);
 app.use("/api/tv", tv);
-app.use("/api/cart", cart);
-app.use("/user",auth)
+app.use("/api/cart",isAuthenticated, cart);
+app.use("/api/shipment",isAuthenticated, shipment);
+app.use("/user",verifyToken,auth)
 
 // for later to make sure the routes are safe when login
 // app.use('/protected', protectedRoute);
